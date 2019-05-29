@@ -19,12 +19,13 @@ var bd21= firebase.database().ref('prestamos')
       var ws = datos.val()
       b2.innerHTML+=`<tr>
                <th scope="row">${datos.key}</th>
-               <td>${ws.articulos}</td>
+               <td>${ws.articulo}</td>
                <td>${ws.clave}</td>
                <td>${ws.cantidad}</td>
                <td>${ws.encargado}</td>
                <td>${ws.solicitante}</td>
                <td>${ws.departamento}</td>
+              
                   </tr>`  
   });
   
@@ -47,12 +48,13 @@ var bd21= firebase.database().ref('prestamos')
       var ws = datos.val()
       b2.innerHTML+=`<tr>
                <th scope="row">${datos.key}</th>
-               <td>${ws.articulos}</td>
+               <td>${ws.articulo}</td>
                <td>${ws.clave}</td>
                <td>${ws.cantidad}</td>
                <td>${ws.encargado}</td>
                <td>${ws.solicitante}</td>
                <td>${ws.departamento}</td>
+              
                   </tr>`  
   });
 }
@@ -72,6 +74,7 @@ var bd21= firebase.database().ref('prestamos')
                  <td>${ws1.encargado}</td>
                  <td>${ws1.solicitante}</td>
                  <td>${ws1.departamento}</td>
+                
                     </tr>`  
     });
  }
@@ -118,6 +121,14 @@ function exportTableToExcel(tableID, filename = ''){
   }
 }
 
+function remover(key) {
+  console.log(key)
+  alert("si entro");
+  firebase.database().ref('prestamos').child(key).remove();
+  vert();
+}
+
+
 function modificar(id) { 
   var c
   var ca
@@ -140,7 +151,8 @@ function modificar(id) {
             };
             firebase.database().ref('/stock/'+c).update(postData);
             arrayi={ articulo:$("#articulos").val(),
-            clave: $("#cantidad").val(),
+            clave: $("#clave").val(),
+            cantidad: $("#cantidad").val(),
             encargado : $("#encargado").val(),
              solicitante : $("#solicitante").val(),
              departamento : $("#depa").val()}
