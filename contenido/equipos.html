@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+        integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+
+    <!-- Our Custom CSS -->
+    <link rel="stylesheet" href="../css/menu.css">
+    <link rel="stylesheet" href="../css/inicio.css">
+    <link rel="stylesheet" href="../css/partidas.css">
+
+    <!---js-->
+    <script type="text/javascript" src="../js/funciones/equipos.js" defer>
+    </script>
+    <script src="../js/main.js" defer></script>
+    <!-- <script src="https://www.gstatic.com/firebasejs/5.10.1/firebase.js"></script> -->
+    <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-firestore.js"></script>
+
+    <!-- Font Awesome-->
+    <script defer src="https://use.fontawesome.com/releases/v5.8.1/js/all.js"
+        integrity="sha384-g5uSoOSBd7KkhAMlnQILrecXvzst9TdC09/VM+pjDTCM+1il8RHz5fKANTFFb+gQ"
+        crossorigin="anonymous"></script>
+    <title>Partidas</title>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="content">
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <div class="container-fluid">
+                    <button type="button" id="sidebarCollapse" class="navbar-btn btn btn-dark d-lg-auto ml-0">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                    <p class="titleNav">Control Centro de Computo</p>
+                </div>
+            </nav>
+
+            <div class="wrapper">
+                <div class="contenido">
+
+                    <div>
+                        <!-- Sidebar -->
+                        <nav id="sidebar" style="height:100%; min-height:100%;">
+                            <ul class="list-unstyled components">
+                                <li>
+                                    <a href="../index.html"><i class="fas fa-tachometer-alt icon"></i>Inicio</a>
+                                </li>
+
+                                <li>
+                                    <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false"
+                                        class="dropdown-toggle"><i class="fas fa-warehouse icon"></i>Almacen</a>
+                                    <ul class="collapse list-unstyled" id="pageSubmenu">
+                                        <li>
+                                            <a href="./prestamos.html">Prestamos</a>
+                                        </li>
+                                        <li>
+                                            <a href="./stock.html">Stock</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="active">
+                                    <a href="#"> <i class="fas fa-laptop-code icon"></i>Eq.
+                                        Computo</a>
+                                </li>
+
+                                <li >
+                                    <a href="./partidas.html"> <i class="fas fa-money-bill-wave icon"></i>Partidas</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+
+                    <div class="container-fluid" style="padding-right: 0 !important; padding-left: 0 !important;">
+                        <div id="global">
+                            <div class="container" style="max-height: -webkit-fill-available">
+                                <div id="mensajes" class="contenidoCentral">
+
+                                    <h2>Eq. Computo</h2>
+
+                                    <div class="inputBuscar">
+                                        <input onkeyup="onKeyUp(event)" id="buscar" type="text" placeholder="Buscar">
+                                        <a id="butonDeleteSearch" class="btn btn-danger" onclick="limpiarB()" style="display: none;"><em class="fa fa-times" style="color:white;"></em></a>
+                                    </div>
+
+                                    <div class="divFilter">
+                                        <!-- <button type="button" class="btn btn-primary" data-toggle="modal"
+                                        data-target="#modalFiltro">Filtrar</button>
+                                        <button type="button" class="btn btn-secondary" onclick="llenarTabla()">Ver Todo</button> -->
+                                    </div>
+
+                                    <br>
+                                    <div class="row">
+
+                                        <div class="col-xs-12 col-md-10" style="padding-bottom: 50px;">
+                                            <div class="table-responsive contentTable">
+                                                <table class="table" id="tablaRepo">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Articulo</th>
+                                                            <th>Departamento</th>
+                                                            <th>Encargado</th>
+                                                            <th>Descripcion</th>
+                                                            <th>N° Serie</th>
+                                                            <th>MAC</th>
+                                                            <th>IP</th>
+                                                            <th>Editar</th>
+                                                            <th>Eliminar</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="contentTable">
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xs-4 col-md-2">
+                                            <div class="botonesV">
+                                                <button type="button" class="btn btn-success" data-toggle="modal"
+                                                    data-target="#modalNuevo1">Nuevo</button>
+                                            </div>
+                                            <div class="botonesV">
+                                                <button type="button" class="btn btn-success" onclick="descargarExcel()">Exportar</button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+
+    <!-- ModalNuevo -->
+    <div class="modal fade" id="modalNuevo1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Nuevo Registro</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <!-- <span aria-hidden="true">&times;</span> -->
+                    </button>
+                </div>
+                <div class="modal-body ">
+                    <form class="col-sm-12" id="equiposForm">
+                        <div class="form-group">
+                            
+                            <br>
+                            <div class="col-sm-10 inputForm">
+                                <input class="form-control" type="text" placeholder="Articulo" required id="articulo"
+                                    name="articulo">
+                            </div>
+                            <div class="col-sm-10 inputForm">
+                                <input class="form-control" type="text" placeholder="Departamento" required id="departamento"
+                                    name="departamento">
+                            </div>
+                            <div class="col-sm-10 inputForm">
+                                <input class="form-control" type="text" placeholder="Encargado" required id="encargado"
+                                    name="encargado">
+                            </div>
+                            <div class="col-sm-10 inputForm">
+                                    <label>Descripcion</label>
+                                    <textarea name="descripcion" rows="5" cols="40" required id="descripcion"></textarea>
+                            </div>
+                            <div class="col-sm-10 inputForm">
+                                    <input class="form-control" type="text" placeholder="N° Serie" required id="nSerie"
+                                    name="nSerie">
+                            </div>
+                            <div class="col-sm-10 inputForm">
+                                    <input class="form-control" type="text" placeholder="MAC" required id="nMac"
+                                    name="nMac">
+                            </div>
+                            <div class="col-sm-10 inputForm">
+                                    <input class="form-control" type="text" placeholder="IP" required id="nIp"
+                                    name="nIp">
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" value="Enviar" class="btn btn-success" form="equiposForm">Agregar</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" id="closeModal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Modal Editar-->
+    <div class="modal fade" id="modalNuevo2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Editar Registro</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <!-- <span aria-hidden="true">&times;</span> -->
+                </button>
+            </div>
+            <div class="modal-body ">
+                <form class="col-sm-12" id="equiposForm1">
+                    <div class="form-group">
+                        
+                        <br>
+                        <div class="col-sm-10 inputForm">
+                                <input class="form-control" type="text" placeholder="id" required readonly="readonly" style="cursor:no-drop;" id="idEd"
+                                    name="idEd">
+                            </div>
+                        <div class="col-sm-10 inputForm">
+                            <input class="form-control" type="text" placeholder="Articulo" required id="articuloEd"
+                                name="articuloEd">
+                        </div>
+                        <div class="col-sm-10 inputForm">
+                            <input class="form-control" type="text" placeholder="Departamento" required id="departamentoEd"
+                                name="departamentoEd">
+                        </div>
+                        <div class="col-sm-10 inputForm">
+                            <input class="form-control" type="text" placeholder="Encargado" required id="encargadoEd"
+                                name="encargadoEd">
+                        </div>
+                        <div class="col-sm-10 inputForm">
+                                <label>Descripcion</label>
+                                <textarea name="descripcionEd" rows="5" cols="40" required id="descripcionEd"></textarea>
+                        </div>
+                        <div class="col-sm-10 inputForm">
+                                <input class="form-control" type="text" placeholder="N° Serie" required id="nSerieEd"
+                                name="nSerieEd">
+                        </div>
+                        <div class="col-sm-10 inputForm">
+                                <input class="form-control" type="text" placeholder="MAC" required id="nMacEd"
+                                name="nMacEd">
+                        </div>
+                        <div class="col-sm-10 inputForm">
+                                <input class="form-control" type="text" placeholder="IP" required id="nIpEd"
+                                name="nIpEd">
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" value="Enviar" class="btn btn-success" form="equiposForm1">Editar</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" id="closeModal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#sidebarCollapse').on('click', function () {
+                $('#sidebar').toggleClass('active');
+                $(this).toggleClass('active');
+            });
+        });
+    </script>
+</body>
+
+</html>

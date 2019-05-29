@@ -19,23 +19,23 @@
     <link rel="stylesheet" href="../css/partidas.css">
 
     <!---js-->
-    <script src="../js/main.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/5.10.1/firebase.js"></script>
+    <script type="text/javascript" src="../js/funciones/partidas.js" defer>
+    </script>
+    <script src="../js/main.js" defer></script>
+    <!-- <script src="https://www.gstatic.com/firebasejs/5.10.1/firebase.js"></script> -->
+    <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-firestore.js"></script>
 
     <!-- Font Awesome-->
     <script defer src="https://use.fontawesome.com/releases/v5.8.1/js/all.js"
         integrity="sha384-g5uSoOSBd7KkhAMlnQILrecXvzst9TdC09/VM+pjDTCM+1il8RHz5fKANTFFb+gQ"
         crossorigin="anonymous"></script>
     <title>Partidas</title>
-
-
 </head>
 
 <body>
-
     <div class="wrapper">
         <div class="content">
-
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
                 <div class="container-fluid">
                     <button type="button" id="sidebarCollapse" class="navbar-btn btn btn-dark d-lg-auto ml-0">
@@ -43,9 +43,7 @@
                         <span></span>
                         <span></span>
                     </button>
-
                     <p class="titleNav">Control Centro de Computo</p>
-
                 </div>
             </nav>
 
@@ -73,7 +71,7 @@
                                     </ul>
                                 </li>
                                 <li>
-                                    <a href="./contenido/equipos.html"> <i class="fas fa-laptop-code icon"></i>Eq.
+                                    <a href="./equipos.html"> <i class="fas fa-laptop-code icon"></i>Eq.
                                         Computo</a>
                                 </li>
 
@@ -92,58 +90,40 @@
                                     <h2>Partidas</h2>
 
                                     <div class="inputBuscar">
-                                        <input id="buscar" type="search" placeholder="Buscar">
+                                        <input onkeyup="onKeyUp(event)" id="buscar" type="text" placeholder="Buscar">
+                                        <a id="butonDeleteSearch" class="btn btn-danger" onclick="limpiarB()"
+                                            style="display: none;"><em class="fa fa-times"
+                                                style="color:white;"></em></a>
                                     </div>
 
                                     <div class="divFilter">
-                                        <button type="button" class="btn btn-primary">Filtrar</button>
-                                        <button type="button" class="btn btn-secondary">Ver Todo</button>
+                                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                                            data-target="#modalFiltro">Filtrar</button>
+                                        <button type="button" class="btn btn-secondary" onclick="llenarTabla()">Ver
+                                            Todo</button>
                                     </div>
 
                                     <br>
                                     <div class="row">
 
-                                        <div class="col-xs-8 col-md-10">
+                                        <div class="col-xs-8 col-md-10" style="padding-bottom: 50px;">
                                             <div class="table-responsive contentTable">
-                                                <table class="table">
+                                                <table class="table" id="tablaRepo">
                                                     <thead>
                                                         <tr>
-                                                            <th>Firstname</th>
-                                                            <th>Lastname</th>
-                                                            <th>Email</th>
+                                                            <th>Clave</th>
+                                                            <th>Partida</th>
+                                                            <th>Articulo</th>
+                                                            <th>Fecha</th>
+                                                            <th>Cantidad</th>
+                                                            <th>Precio Unitario</th>
+                                                            <th>Total</th>
+                                                            <th>Editar</th>
+                                                            <th>Eliminar</th>
                                                         </tr>
                                                     </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>Default</td>
-                                                            <td>Defaultson</td>
-                                                            <td>def@somemail.com</td>
-                                                        </tr>
-                                                        <tr class="success">
-                                                            <td>Success</td>
-                                                            <td>Doe</td>
-                                                            <td>john@example.com</td>
-                                                        </tr>
-                                                        <tr class="danger">
-                                                            <td>Danger</td>
-                                                            <td>Moe</td>
-                                                            <td>mary@example.com</td>
-                                                        </tr>
-                                                        <tr class="info">
-                                                            <td>Info</td>
-                                                            <td>Dooley</td>
-                                                            <td>july@example.com</td>
-                                                        </tr>
-                                                        <tr class="warning">
-                                                            <td>Warning</td>
-                                                            <td>Refs</td>
-                                                            <td>bo@example.com</td>
-                                                        </tr>
-                                                        <tr class="active">
-                                                            <td>Active</td>
-                                                            <td>Activeson</td>
-                                                            <td>act@example.com</td>
-                                                        </tr>
+                                                    <tbody id="contentTable">
+
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -155,7 +135,8 @@
                                                     data-target="#modalNuevo">Nuevo</button>
                                             </div>
                                             <div class="botonesV">
-                                                <button type="button" class="btn btn-success">Exportar</button>
+                                                <button type="button" class="btn btn-success"
+                                                    onclick="descargarExcel()">Exportar</button>
                                             </div>
                                         </div>
 
@@ -170,10 +151,62 @@
         </div>
     </div>
     </div>
+    </div>
 
+    <!--modal Editar-->
+    <div class="modal fade" id="modalNuevoEd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel1">Editar Partida</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <!-- <span aria-hidden="true">&times;</span> -->
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form class="col-sm-12" id="partidaFormEd">
+                        <div class="form-group">
+                            <div class="col-md-7 inputForm">
+                                <label style="padding-right: 2px;">Fecha</label>
+                                <input class="form-control" value="" type="date" id="fechaEd" name="fechaEd">
+                            </div>
+                            <br>
+                            <div class="col-sm-10 inputForm">
+                                <input class="form-control" type="text" placeholder="id" required readonly="readonly"
+                                    style="cursor:no-drop;" id="idEd" name="idEd">
+                            </div>
+                            <div class="col-sm-10 inputForm">
+                                <input class="form-control" type="text" placeholder="Partida" required id="partidaEd"
+                                    name="partidaEd">
+                            </div>
+                            <div class="col-sm-10 inputForm">
+                                <input class="form-control" type="text" placeholder="Articulo" required id="articuloEd"
+                                    name="articuloEd">
+                            </div>
+                            <div class="col-sm-10 inputForm">
+                                <input class="form-control" type="text" placeholder="Clave" required id="claveEd"
+                                    required readonly="readonly" style="cursor:no-drop;" name="claveEd">
+                            </div>
+                            <div class="col-sm-10 inputForm">
+                                <label style="padding-right: 2px;">Cantidad</label>
+                                <input type="number" value="0" min="0" max="1000" step="1" required id="cantidadEd"
+                                    name="cantidadEd" />
+                            </div>
+                            <div class="col-sm-10 inputForm">
+                                <input class="form-control" type="text" placeholder="Precio Unitario: 0000" required
+                                    id="precioUEd" name="precioUEd">
+                            </div>
+                        </div>
 
-
-
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" value="Enviar" class="btn btn-success" form="partidaFormEd">Agregar</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" id="closeModal">Cancelar</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- ModalNuevo -->
@@ -188,39 +221,78 @@
                     </button>
                 </div>
                 <div class="modal-body ">
-                    <form class="col-sm-12">
+                    <form class="col-sm-12" id="partidaForm">
                         <div class="form-group">
-                                <div class="col-md-7 inputForm">
-                                        <input class="form-control" type="date">
-                                    </div>
-                                    <br>
+                            <div class="col-md-7 inputForm">
+                                <label style="padding-right: 2px;">Fecha</label>
+                                <input class="form-control" value="" type="date" id="fecha" name="fecha">
+                            </div>
+                            <br>
                             <div class="col-sm-10 inputForm">
-                                <input class="form-control" type="text" placeholder="Partida">
+                                <input class="form-control" type="text" placeholder="Partida" required id="partida"
+                                    name="partida">
                             </div>
                             <div class="col-sm-10 inputForm">
-                                <input class="form-control" type="text" placeholder="Articulo">
+                                <input class="form-control" type="text" placeholder="Articulo" required id="articulo"
+                                    name="articulo">
                             </div>
                             <div class="col-sm-10 inputForm">
-                                <input class="form-control" type="text" placeholder="Clave">
+                                <input class="form-control" type="text" placeholder="Clave" required id="clave"
+                                    name="clave">
                             </div>
                             <div class="col-sm-10 inputForm">
                                 <label style="padding-right: 2px;">Cantidad</label>
-                                <input type="number" value="0" min="0" max="1000" step="1" />
+                                <input type="number" value="0" min="0" max="1000" step="1" required id="cantidad"
+                                    name="cantidad" />
                             </div>
                             <div class="col-sm-10 inputForm">
-                                <input class="form-control" type="text" placeholder="Precio Unitario: 00.00">
+                                <input class="form-control" type="text" placeholder="Precio Unitario: 0000" required
+                                    id="precioU" name="precioU">
                             </div>
                         </div>
+
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success">Agregar</button>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" value="Enviar" class="btn btn-success" form="partidaForm">Agregar</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" id="closeModal">Cancelar</button>
                 </div>
             </div>
         </div>
     </div>
 
+    <!--Modal Filtrar por-->
+    <div class="modal fade" id="modalFiltro" tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Filtrar</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <!-- <span aria-hidden="true">&times;</span> -->
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form class="col-sm-12" id="formFilter">
+                        <div class="form-group">
+                            <div class="col-md-7 inputForm">
+                                <label style="padding-right: 2px;">Fecha Inicial</label>
+                                <input class="form-control" value="" type="date" id="fechaIni" name="fechaIni">
+                            </div>
+                            <div class="col-md-7 inputForm">
+                                <label style="padding-right: 2px;">Fecha Final</label>
+                                <input class="form-control" value="" type="date" id="fechaFin" name="fechaFin">
+                            </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" value="Enviar" class="btn btn-primary" form="formFilter">Filtrar</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"
+                        id="closeModalFilter">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 
@@ -245,9 +317,6 @@
                 $(this).toggleClass('active');
             });
         });
-    </script>
-    <script type="text/javascript">
-        $(".form_datetime").datetimepicker({ format: 'yyyy-mm-dd' });
     </script>
 </body>
 
