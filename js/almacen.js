@@ -144,11 +144,22 @@ function modificar(id) {
             encargado : $("#encargado").val(),
              solicitante : $("#solicitante").val(),
              departamento : $("#depa").val()}
-            firebase.database().ref('prestamos').push(arrayi); 
-             
-           
+            firebase.database().ref('prestamos').push(arrayi);  
+            var ee
+            var xs= firebase.database().ref('stock').orderByChild("id").on("child_added",function(datos){
+              ee =datos.val()
+              if (datos.key==c) {
+                
+                if (ee.cantidad==0) {
+                  firebase.database().ref('stock').child(c).remove();
+                }
+              }
+              
+            })
+            
+            
             
            }
          }
-            
+         
      })   } 
