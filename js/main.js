@@ -1,5 +1,9 @@
 //google sigin
-var citiesRef = db.collection("partidas");
+  // Set the configuration for your app
+  // TODO: Replace with your project's config object
+
+
+  // Get a reference to the database service
 // var provider = new firebase.auth.GoogleAuthProvider();
 //   // Set the configuration for your app
 //   // TODO: Replace with your project's config object
@@ -29,7 +33,6 @@ var citiesRef = db.collection("partidas");
 //     });
 // }
 //base de datos
-function consulta(){
-  var query = citiesRef.where("cantidad", "==", "2"); 
-  console.log(query);
-}
+
+  // Set the configuration for your app
+  // TODO: Replace with your project's config object
