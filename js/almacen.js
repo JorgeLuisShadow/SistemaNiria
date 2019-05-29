@@ -68,7 +68,7 @@ var bd21= firebase.database().ref('prestamos')
         var ws1 = datos.val()
         b21.innerHTML+=`<tr>
                  <th scope="row">${datos.key}</th>
-                 <td>${ws1.articulos}</td>
+                 <td>${ws1.articulo}</td>
                  <td>${ws1.clave}</td>
                  <td>${ws1.cantidad}</td>
                  <td>${ws1.encargado}</td>
