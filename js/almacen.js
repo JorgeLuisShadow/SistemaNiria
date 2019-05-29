@@ -151,8 +151,8 @@ function modificar(id) {
             };
             firebase.database().ref('/stock/'+c).update(postData);
             arrayi={ articulo:$("#articulos").val(),
-            clave: $("#clave").val(),
             cantidad: $("#cantidad").val(),
+            clave: $("#clave").val(),
             encargado : $("#encargado").val(),
              solicitante : $("#solicitante").val(),
              departamento : $("#depa").val()}
