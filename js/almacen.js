@@ -85,12 +85,7 @@ var bd21= firebase.database().ref('prestamos')
 function guardar(){
   
    modificar($("#clave").val())
-   arrayi={ articulo:$("#articulos").val(),
-   clave: $("#cantidad").val(),
-   encargado : $("#encargado").val(),
-    solicitante : $("#solicitante").val(),
-    departamento : $("#depa").val()}
-   firebase.database().ref('prestamos').push(arrayi); 
+  
 }  
 function exportTableToExcel(tableID, filename = ''){
   var downloadLink;
@@ -144,6 +139,12 @@ function modificar(id) {
               cantidad:ca
             };
             firebase.database().ref('/stock/'+c).update(postData);
+            arrayi={ articulo:$("#articulos").val(),
+            clave: $("#cantidad").val(),
+            encargado : $("#encargado").val(),
+             solicitante : $("#solicitante").val(),
+             departamento : $("#depa").val()}
+            firebase.database().ref('prestamos').push(arrayi); 
              
            
             
