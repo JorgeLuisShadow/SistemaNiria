@@ -18,7 +18,7 @@ var bd21= firebase.database().ref('prestamos')
      bd21.orderByChild("id").on("child_added",function(datos){
       var ws = datos.val()
       b2.innerHTML+=`<tr>
-               <th scope="row">${datos.key}</th>
+               
                <td>${ws.articulo}</td>
                <td>${ws.clave}</td>
                <td>${ws.cantidad}</td>
@@ -47,7 +47,7 @@ var bd21= firebase.database().ref('prestamos')
      bd21.orderByChild("id").on("child_added",function(datos){
       var ws = datos.val()
       b2.innerHTML+=`<tr>
-               <th scope="row">${datos.key}</th>
+               
                <td>${ws.articulo}</td>
                <td>${ws.clave}</td>
                <td>${ws.cantidad}</td>
@@ -67,7 +67,7 @@ var bd21= firebase.database().ref('prestamos')
        bd21.orderByChild("departamento").equalTo($("#dep").val()).on("child_added",function(datos){
         var ws1 = datos.val()
         b21.innerHTML+=`<tr>
-                 <th scope="row">${datos.key}</th>
+                 
                  <td>${ws1.articulo}</td>
                  <td>${ws1.clave}</td>
                  <td>${ws1.cantidad}</td>
