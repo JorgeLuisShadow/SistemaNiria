@@ -71,7 +71,6 @@ function llenarTabla() {
     data.orderByChild("articulo").on("child_added", function (datos) {
 
       var d = datos.val();
-
       {
         var row = table.insertRow(0);
         var cellClave = row.insertCell(0);
@@ -80,8 +79,9 @@ function llenarTabla() {
         var cellFecha = row.insertCell(3);
         var cellCantidad = row.insertCell(4);
         var cellPU = row.insertCell(5);
-        var cellEdit = row.insertCell(6);
-        var cellDelete = row.insertCell(7);
+        var cellTotal = row.insertCell(6);
+        var cellEdit = row.insertCell(7);
+        var cellDelete = row.insertCell(8);
 
         cellArticulo.innerHTML = d.articulo;
         cellCantidad.innerHTML = d.cantidad;
@@ -89,6 +89,7 @@ function llenarTabla() {
         cellFecha.innerHTML = d.fecha;
         cellPartida.innerHTML = d.partida;
         cellPU.innerHTML = "$ " + d.precioU + " MNX";
+        cellTotal.innerHTML = "$ " +(d.precioU*d.cantidad)+ " MNX";
         cellEdit.innerHTML = '<a class="btn btn-warning"><em class="fa fa-edit" style="color:white"></em></a>';
         cellDelete.innerHTML = ' <a class="btn btn-danger" onclick="remover(\''+datos.key+'\')"><em class="fa fa-trash-alt" style="color:white"></em></a>';
 
@@ -138,8 +139,9 @@ function filtrarFecha() {
           var cellFecha = row.insertCell(3);
           var cellCantidad = row.insertCell(4);
           var cellPU = row.insertCell(5);
-          var cellEdit = row.insertCell(6);
-          var cellDelete = row.insertCell(7);
+          var cellTotal = row.insertCell(6);
+          var cellEdit = row.insertCell(7);
+          var cellDelete = row.insertCell(8);
   
           cellArticulo.innerHTML = d.articulo;
           cellCantidad.innerHTML = d.cantidad;
@@ -147,6 +149,7 @@ function filtrarFecha() {
           cellFecha.innerHTML = d.fecha;
           cellPartida.innerHTML = d.partida;
           cellPU.innerHTML = "$ " + d.precioU + " MNX";
+          cellTotal.innerHTML = "$ " +(d.precioU*d.cantidad)+ " MNX";
           cellEdit.innerHTML = '<a class="btn btn-warning"><em class="fa fa-edit" style="color:white"></em></a>';
           cellDelete.innerHTML = ' <a class="btn btn-danger" onclick="remover(\''+datos.key+'\')"><em class="fa fa-trash-alt" style="color:white"></em></a>';
   
@@ -201,8 +204,9 @@ function buscar(value){
         var cellFecha = row.insertCell(3);
         var cellCantidad = row.insertCell(4);
         var cellPU = row.insertCell(5);
-        var cellEdit = row.insertCell(6);
-        var cellDelete = row.insertCell(7);
+        var cellTotal = row.insertCell(6);
+        var cellEdit = row.insertCell(7);
+        var cellDelete = row.insertCell(8);
 
         cellArticulo.innerHTML = d.articulo;
         cellCantidad.innerHTML = d.cantidad;
@@ -210,6 +214,7 @@ function buscar(value){
         cellFecha.innerHTML = d.fecha;
         cellPartida.innerHTML = d.partida;
         cellPU.innerHTML = "$ " + d.precioU + " MNX";
+        cellTotal.innerHTML = "$ " +(d.precioU*d.cantidad)+ " MNX";
         cellEdit.innerHTML = '<a class="btn btn-warning"><em class="fa fa-edit" style="color:white"></em></a>';
         cellDelete.innerHTML = ' <a class="btn btn-danger" onclick="remover(\''+datos.key+'\')"><em class="fa fa-trash-alt" style="color:white"></em></a>';
 
