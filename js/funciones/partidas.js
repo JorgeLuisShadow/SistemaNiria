@@ -165,7 +165,7 @@ function llenarTabla() {
         cellPartida.innerHTML = d.partida;
         cellPU.innerHTML = "$ " + d.precioU + " MNX";
         cellTotal.innerHTML = "$ " + (d.precioU * d.cantidad) + " MNX";
-        cellEdit.innerHTML = '<a class="btn btn-warning"><em class="fa fa-edit" style="color:white"></em></a>';
+        cellEdit.innerHTML = '<a class="btn btn-warning" onclick="edit(\'' + datos.key + '\')"><em class="fa fa-edit" style="color:white"></em></a>';
         cellDelete.innerHTML = ' <a class="btn btn-danger" onclick="remover(\'' + datos.key + '\')"><em class="fa fa-trash-alt" style="color:white"></em></a>';
 
       }
@@ -225,7 +225,7 @@ function filtrarFecha() {
           cellPartida.innerHTML = d.partida;
           cellPU.innerHTML = "$ " + d.precioU + " MNX";
           cellTotal.innerHTML = "$ " + (d.precioU * d.cantidad) + " MNX";
-          cellEdit.innerHTML = '<a class="btn btn-warning"><em class="fa fa-edit" style="color:white"></em></a>';
+          cellEdit.innerHTML = '<a class="btn btn-warning" onclick="edit(\'' + datos.key + '\')"><em class="fa fa-edit" style="color:white"></em></a>';
           cellDelete.innerHTML = ' <a class="btn btn-danger" onclick="remover(\'' + datos.key + '\')"><em class="fa fa-trash-alt" style="color:white"></em></a>';
 
         }
@@ -290,7 +290,7 @@ function buscar(value) {
         cellPartida.innerHTML = d.partida;
         cellPU.innerHTML = "$ " + d.precioU + " MNX";
         cellTotal.innerHTML = "$ " + (d.precioU * d.cantidad) + " MNX";
-        cellEdit.innerHTML = '<a class="btn btn-warning"><em class="fa fa-edit" style="color:white"></em></a>';
+        cellEdit.innerHTML = '<a class="btn btn-warning" onclick="edit(\'' + datos.key + '\')"><em class="fa fa-edit" style="color:white"></em></a>';
         cellDelete.innerHTML = ' <a class="btn btn-danger" onclick="remover(\'' + datos.key + '\')"><em class="fa fa-trash-alt" style="color:white"></em></a>';
 
       }
@@ -298,6 +298,75 @@ function buscar(value) {
     });
   }
 }
+
+//editar
+function edit(key) {
+  var data = db.ref('partidas');
+  data.orderByChild("articulo").on("child_added", function (datos) {
+    var d = datos.val();
+    {
+      if (key == datos.key) {
+      
+        document.getElementById('idEd').value = datos.key;
+        document.getElementById('articuloEd').value = d.articulo;
+        document.getElementById('cantidadEd').value = d.cantidad;
+        document.getElementById('claveEd').value = d.clave;
+        document.getElementById("fechaEd").value = d.fecha;
+        document.getElementById('partidaEd').value = d.partida;
+       
+        
+  
+        document.getElementById("precioUEd").value = d.precioU;
+    
+
+      }
+      
+    }
+  });
+  $('#modalNuevoEd').modal('show')
+
+}
+var form = document.getElementById('partidaFormEd'); // Obtenemos la referencia al formulario
+if (form) { // Si existe nuestro elemento en memoria este se quedara escuchando al evento submit del formulario
+  form.addEventListener('submit', editar); // Al momento de enviar el formulario, ejecuta la función "contactform"
+  //para la validacion de solo numeros
+}
+$('#modalNuevoEd').on('hidden.bs.modal', function (e) {
+  form.reset();
+})
+
+
+function editar(event){
+  event.preventDefault(); // Prevenimos el comportamiento por defecto de un formulario (Enviar por URL los parametros)
+const key = document.getElementById('idEd');
+const partida = document.getElementById('partidaEd'); // Obtenemos la referencia a cada uno de nuestros elementos del formulario
+const articulo = document.getElementById('articuloEd');
+const clave = document.getElementById('claveEd');
+const cantidad = document.getElementById('cantidadEd');
+const precioU = document.getElementById("precioUEd");
+const fecha = document.getElementById("fechaEd");
+
+ 
+  update2(key.value,partida.value,articulo.value,clave.value,cantidad.value,precioU.value,fecha.value);
+}
+
+function update2(key,partida,articulo,clave,cantidad,precioU,fecha) {
+  var data = db.ref('partidas');
+  data.child(key)
+    .update({
+      partida: partida,
+      articulo: articulo,
+      clave: clave,
+      cantidad: cantidad,
+      precioU: precioU,
+      fecha: fecha
+    });
+    $('#modalNuevoEd').modal('hide')
+    this.llenarTabla();
+}
+
+
+
 
 /**validaciones date */
 
@@ -314,7 +383,7 @@ if (mm < 10) {
 
 today = yyyy + '-' + mm + '-' + dd;
 document.getElementById("fecha").setAttribute("max", today);
-document.getElementById("fecha").setAttribute("min", today);
+//document.getElementById("fecha").setAttribute("min", today);
 
 document.getElementById("fechaFin").setAttribute("max", today);
 document.getElementById("fechaIni").setAttribute("max", today);

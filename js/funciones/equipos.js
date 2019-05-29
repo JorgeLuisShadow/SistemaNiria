@@ -205,7 +205,6 @@ if (form) { // Si existe nuestro elemento en memoria este se quedara escuchando 
 }
 $('#modalNuevo2').on('hidden.bs.modal', function (e) {
   form.reset();
-
 })
 
 function editar(event){
