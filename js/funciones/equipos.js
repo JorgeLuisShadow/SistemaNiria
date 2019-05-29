@@ -135,7 +135,7 @@ function buscar(value) {
   if (table) {
 
     table.innerHTML = "";
-    data.orderByChild("articulo").equalTo(value).on("child_added", function (datos) {
+    data.orderByChild("departamento").equalTo(value).on("child_added", function (datos) {
       var d = datos.val();
 
       {

@@ -9,7 +9,7 @@ firebase.initializeApp({
 var form = document.getElementById('partidaForm'); // Obtenemos la referencia al formulario
 if (form) { // Si existe nuestro elemento en memoria este se quedara escuchando al evento submit del formulario
   form.addEventListener('submit', partidaForm1); // Al momento de enviar el formulario, ejecuta la función "contactform"
-  form.precioU.addEventListener("keypress", soloNumeros, false); //para la validacion de solo numeros
+  //form.precioU.addEventListener("keypress", soloNumeros, false); //para la validacion de solo numeros
 }
 
 document.getElementById("fecha").valueAsDate = new Date();
@@ -164,7 +164,11 @@ function llenarTabla() {
         cellFecha.innerHTML = d.fecha;
         cellPartida.innerHTML = d.partida;
         cellPU.innerHTML = "$ " + d.precioU + " MNX";
-        cellTotal.innerHTML = "$ " + (d.precioU * d.cantidad) + " MNX";
+        var iva = (d.precioU*0.16);
+          console.log(iva)
+          var ct = (parseFloat(d.precioU)+parseFloat(iva));
+          console.log(ct); 
+          cellTotal.innerHTML = "$ " + (ct * d.cantidad) + " MNX";
         cellEdit.innerHTML = '<a class="btn btn-warning" onclick="edit(\'' + datos.key + '\')"><em class="fa fa-edit" style="color:white"></em></a>';
         cellDelete.innerHTML = ' <a class="btn btn-danger" onclick="remover(\'' + datos.key + '\')"><em class="fa fa-trash-alt" style="color:white"></em></a>';
 
@@ -224,7 +228,11 @@ function filtrarFecha() {
           cellFecha.innerHTML = d.fecha;
           cellPartida.innerHTML = d.partida;
           cellPU.innerHTML = "$ " + d.precioU + " MNX";
-          cellTotal.innerHTML = "$ " + (d.precioU * d.cantidad) + " MNX";
+          var iva = (d.precioU*0.16);
+          console.log(iva)
+          var ct = (parseFloat(d.precioU)+parseFloat(iva));
+          console.log(ct);
+          cellTotal.innerHTML = "$ " + (ct * d.cantidad) + " MNX";
           cellEdit.innerHTML = '<a class="btn btn-warning" onclick="edit(\'' + datos.key + '\')"><em class="fa fa-edit" style="color:white"></em></a>';
           cellDelete.innerHTML = ' <a class="btn btn-danger" onclick="remover(\'' + datos.key + '\')"><em class="fa fa-trash-alt" style="color:white"></em></a>';
 
@@ -268,7 +276,7 @@ function buscar(value) {
   if (table) {
 
     table.innerHTML = "";
-    data.orderByChild("articulo").equalTo(value).on("child_added", function (datos) {
+    data.orderByChild("partida").equalTo(value).on("child_added", function (datos) {
       var d = datos.val();
 
       {
@@ -289,7 +297,11 @@ function buscar(value) {
         cellFecha.innerHTML = d.fecha;
         cellPartida.innerHTML = d.partida;
         cellPU.innerHTML = "$ " + d.precioU + " MNX";
-        cellTotal.innerHTML = "$ " + (d.precioU * d.cantidad) + " MNX";
+        var iva = (d.precioU*0.16);
+          console.log(iva)
+          var ct = (parseFloat(d.precioU)+parseFloat(iva));
+          console.log(ct);
+          cellTotal.innerHTML = "$ " + (ct * d.cantidad) + " MNX";
         cellEdit.innerHTML = '<a class="btn btn-warning" onclick="edit(\'' + datos.key + '\')"><em class="fa fa-edit" style="color:white"></em></a>';
         cellDelete.innerHTML = ' <a class="btn btn-danger" onclick="remover(\'' + datos.key + '\')"><em class="fa fa-trash-alt" style="color:white"></em></a>';
 
