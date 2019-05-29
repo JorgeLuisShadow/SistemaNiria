@@ -1,0 +1,19 @@
+.contenidoCentral {
+    padding-top: 30px;
+    padding-left: 20px;
+    
+}
+.contentTable {
+    background-color: #ffffff;
+    -webkit-box-shadow: 8px 6px 24px -7px rgba(0,0,0,0.31);
+    -moz-box-shadow: 8px 6px 24px -7px rgba(0,0,0,0.31);
+    box-shadow: 8px 6px 24px -7px rgba(0,0,0,0.31);
+}
+.botonesV button{
+    padding-bottom: 1px !important;
+    width: 70% !important;
+}
+.botonesV{
+    padding-bottom: 10px !important;
+    
+}

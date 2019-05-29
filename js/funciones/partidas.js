@@ -1,5 +1,3 @@
-
-
 firebase.initializeApp({
   apiKey: "AIzaSyAE5jJKOvZCVZvjFkO0NUBwgvLz4KxnNWk",
   authDomain: "systemstec-69d04.firebaseapp.com",
@@ -8,7 +6,6 @@ firebase.initializeApp({
 })
 
 /** agregar nueva */
-
 var form = document.getElementById('partidaForm'); // Obtenemos la referencia al formulario
 if (form) { // Si existe nuestro elemento en memoria este se quedara escuchando al evento submit del formulario
   form.addEventListener('submit', partidaForm1); // Al momento de enviar el formulario, ejecuta la función "contactform"
@@ -37,12 +34,79 @@ function partidaForm1(event) {
     'cantidad': cantidad.value,
     'precioU': precioU.value,
     'fecha': fecha.value
-  }; // Creamos un objecto con todos los elementos de nuestro formulario.
-  insertarPartida(data); // Enviamos la información obtenida por el usuario a la función que se encargara de guardar la información en Firebase
+  };
+  const dataStock = {
+    'articulo': articulo.value,
+    'clave': clave.value,
+    'cantidad': cantidad.value,
+  };
+  const claveN = clave.value;
+  const cantidadN = cantidad.value;  // Creamos un objecto con todos los elementos de nuestro formulario.
+ 
+  insertarPartida(data); 
+
+  insertarStock(dataStock,claveN, cantidadN, dataStock);
+
+  validaEx(data, claveN, cantidadN, dataStock);
   form.reset(); // borramos todos los campos. 
 }
-
 var db = firebase.database();
+
+// validacion si exite o no 
+function validaEx(data2, claveN, cantidadN, dataStock) {
+
+  var data = db.ref('stock');
+ 
+var list= [];
+  data.orderByChild("clave").equalTo(claveN).on("child_added", function (datos) {
+
+    var v = datos.val();
+    list.push({
+      id: datos.key
+    });
+
+    var count =0;
+      {
+        if(count==0){
+
+        alert("entro");
+       
+        if (v.clave == claveN) {
+          var a = parseInt(v.cantidad);
+          var b = parseInt(cantidadN);
+          
+          var cantidadT = a + b;
+          
+          var t = String(cantidadT);
+          console.log(t)
+          update(datos.key,t);
+
+          if(list.length>1){
+          data.child(list[0].id).remove();
+          }
+          count+1;
+        } else {
+         // insertarPartida(data2); // Enviamos la información obtenida por el usuario a la función que se encargara de guardar la información en Firebase
+          //insertarStock(dataStock);
+        
+        }
+      
+      }
+      
+    }
+  })
+ 
+
+
+}
+function update(key, cantidad) {
+  var data = db.ref('stock');
+  data.child(key)
+    .update({ cantidad: cantidad });
+
+}
+
+
 
 function insertarPartida(data) {
 
@@ -50,14 +114,25 @@ function insertarPartida(data) {
   db.ref('partidas').push(data)
     .then(function () {
       $('#modalNuevo').modal('hide')
-     // alert('mensaje guardado'); // Si la petición es correcta y almaceno los datos mostramos un mensaje al usuario.
+      // alert('mensaje guardado'); // Si la petición es correcta y almaceno los datos mostramos un mensaje al usuario.
     })
     .catch(function () {
-     // alert('mensaje No guardado'); // En caso de ocurrir un error le mostramos al usuario que ocurrió un error.
+      // alert('mensaje No guardado'); // En caso de ocurrir un error le mostramos al usuario que ocurrió un error.
     });
   llenarTabla();
 
 };
+
+function insertarStock(data,claveN, cantidadN, dataStock) {
+  db.ref('stock').push(data)
+    .then(function () {
+     // validaEx(data, claveN, cantidadN, dataStock);
+    })
+    .catch(function () {
+      // alert('mensaje No guardado'); // En caso de ocurrir un error le mostramos al usuario que ocurrió un error.
+    });
+  llenarTabla();
+}
 
 function llenarTabla() {
 
@@ -89,14 +164,14 @@ function llenarTabla() {
         cellFecha.innerHTML = d.fecha;
         cellPartida.innerHTML = d.partida;
         cellPU.innerHTML = "$ " + d.precioU + " MNX";
-        cellTotal.innerHTML = "$ " +(d.precioU*d.cantidad)+ " MNX";
+        cellTotal.innerHTML = "$ " + (d.precioU * d.cantidad) + " MNX";
         cellEdit.innerHTML = '<a class="btn btn-warning"><em class="fa fa-edit" style="color:white"></em></a>';
-        cellDelete.innerHTML = ' <a class="btn btn-danger" onclick="remover(\''+datos.key+'\')"><em class="fa fa-trash-alt" style="color:white"></em></a>';
+        cellDelete.innerHTML = ' <a class="btn btn-danger" onclick="remover(\'' + datos.key + '\')"><em class="fa fa-trash-alt" style="color:white"></em></a>';
 
       }
 
     })
-  
+
   }
 }
 this.llenarTabla();
@@ -124,13 +199,13 @@ function filtrarFecha() {
 
   var table = document.getElementById('contentTable');
   if (table) {
-    
+
     table.innerHTML = "";
 
     data.orderByChild("fecha").startAt(startDate.value).endAt(endDate.value)
       .on("child_added", function (datos) {
         var d = datos.val();
-  
+
         {
           var row = table.insertRow(0);
           var cellClave = row.insertCell(0);
@@ -142,26 +217,26 @@ function filtrarFecha() {
           var cellTotal = row.insertCell(6);
           var cellEdit = row.insertCell(7);
           var cellDelete = row.insertCell(8);
-  
+
           cellArticulo.innerHTML = d.articulo;
           cellCantidad.innerHTML = d.cantidad;
           cellClave.innerHTML = d.clave;
           cellFecha.innerHTML = d.fecha;
           cellPartida.innerHTML = d.partida;
           cellPU.innerHTML = "$ " + d.precioU + " MNX";
-          cellTotal.innerHTML = "$ " +(d.precioU*d.cantidad)+ " MNX";
+          cellTotal.innerHTML = "$ " + (d.precioU * d.cantidad) + " MNX";
           cellEdit.innerHTML = '<a class="btn btn-warning"><em class="fa fa-edit" style="color:white"></em></a>';
-          cellDelete.innerHTML = ' <a class="btn btn-danger" onclick="remover(\''+datos.key+'\')"><em class="fa fa-trash-alt" style="color:white"></em></a>';
-  
+          cellDelete.innerHTML = ' <a class="btn btn-danger" onclick="remover(\'' + datos.key + '\')"><em class="fa fa-trash-alt" style="color:white"></em></a>';
+
         }
-  
+
       });
   }
   form2.reset(); // borramos todos los campos. 
 }
 
 
-function remover(key){
+function remover(key) {
   var data = db.ref('partidas');
   data.child(key).remove();
   this.llenarTabla()
@@ -171,7 +246,7 @@ function remover(key){
 
 function onKeyUp(event) {
   var keycode = event.keyCode;
-  if(keycode == '13'){
+  if (keycode == '13') {
 
     var search = document.getElementById("buscar");
     buscar(search.value);
@@ -179,19 +254,19 @@ function onKeyUp(event) {
 
   }
 }
-function limpiarB(){
-  document.getElementById("buscar").value =""
+function limpiarB() {
+  document.getElementById("buscar").value = ""
   this.llenarTabla();
   document.getElementById("butonDeleteSearch").style.display = "none";
 }
 
 //buscador
-function buscar(value){
+function buscar(value) {
   var data = db.ref('partidas');
- 
+
   var table = document.getElementById('contentTable');
   if (table) {
-    
+
     table.innerHTML = "";
     data.orderByChild("articulo").equalTo(value).on("child_added", function (datos) {
       var d = datos.val();
@@ -214,9 +289,9 @@ function buscar(value){
         cellFecha.innerHTML = d.fecha;
         cellPartida.innerHTML = d.partida;
         cellPU.innerHTML = "$ " + d.precioU + " MNX";
-        cellTotal.innerHTML = "$ " +(d.precioU*d.cantidad)+ " MNX";
+        cellTotal.innerHTML = "$ " + (d.precioU * d.cantidad) + " MNX";
         cellEdit.innerHTML = '<a class="btn btn-warning"><em class="fa fa-edit" style="color:white"></em></a>';
-        cellDelete.innerHTML = ' <a class="btn btn-danger" onclick="remover(\''+datos.key+'\')"><em class="fa fa-trash-alt" style="color:white"></em></a>';
+        cellDelete.innerHTML = ' <a class="btn btn-danger" onclick="remover(\'' + datos.key + '\')"><em class="fa fa-trash-alt" style="color:white"></em></a>';
 
       }
 
@@ -226,26 +301,26 @@ function buscar(value){
 
 /**validaciones date */
 
-var today =  new Date();
+var today = new Date();
 var dd = today.getDate();
-var mm = today.getMonth()+1; //January is 0!
+var mm = today.getMonth() + 1; //January is 0!
 var yyyy = today.getFullYear();
- if(dd<10){
-        dd='0'+dd
-    } 
-    if(mm<10){
-        mm='0'+mm
-    } 
+if (dd < 10) {
+  dd = '0' + dd
+}
+if (mm < 10) {
+  mm = '0' + mm
+}
 
-today = yyyy+'-'+mm+'-'+dd;
-document.getElementById("fecha").setAttribute("max", today); 
-document.getElementById("fecha").setAttribute("min", today); 
+today = yyyy + '-' + mm + '-' + dd;
+document.getElementById("fecha").setAttribute("max", today);
+document.getElementById("fecha").setAttribute("min", today);
 
-document.getElementById("fechaFin").setAttribute("max",today);
-document.getElementById("fechaIni").setAttribute("max",today);
+document.getElementById("fechaFin").setAttribute("max", today);
+document.getElementById("fechaIni").setAttribute("max", today);
 
 //Solo permite introducir numeros.
-function soloNumeros(e){
+function soloNumeros(e) {
   var key = window.event ? e.which : e.keyCode;
   if (key < 48 || key > 57) {
     e.preventDefault();
@@ -253,7 +328,7 @@ function soloNumeros(e){
 }
 //generar Excel
 
-function descargarExcel(){
+function descargarExcel() {
   //Creamos un Elemento Temporal en forma de enlace
   var tmpElemento = document.createElement('a');
   // obtenemos la información desde el div que lo contiene en el html
@@ -263,8 +338,8 @@ function descargarExcel(){
   var tabla_html = tabla_div.outerHTML.replace(/ /g, '%20');
   tmpElemento.href = data_type + ', ' + tabla_html;
   //Asignamos el nombre a nuestro EXCEL
-  var fecha =new Date();
-  tmpElemento.download = 'ReportePartidas '+fecha.getDate()+"-"+(fecha.getMonth()+1)+"-"+fecha.getFullYear()+'.xls';
+  var fecha = new Date();
+  tmpElemento.download = 'ReportePartidas ' + fecha.getDate() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getFullYear() + '.xls';
   // Simulamos el click al elemento creado para descargarlo
   tmpElemento.click();
 }
