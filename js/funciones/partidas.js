@@ -168,9 +168,9 @@ function llenarTabla() {
           console.log(iva)
           var ct = (parseFloat(d.precioU)+parseFloat(iva));
           console.log(ct); 
-          cellTotal.innerHTML = "$ " + (ct * d.cantidad) + " MNX";
+          cellTotal.innerHTML = "$ " + (ct * d.cantidad).toFixed(2) + " MNX";
         cellEdit.innerHTML = '<a class="btn btn-warning" onclick="edit(\'' + datos.key + '\')"><em class="fa fa-edit" style="color:white"></em></a>';
-        cellDelete.innerHTML = ' <a class="btn btn-danger" onclick="remover(\'' + datos.key + '\')"><em class="fa fa-trash-alt" style="color:white"></em></a>';
+        cellDelete.innerHTML = ' <a class="btn btn-danger" onclick="confirm(\'' + datos.key + '\')"><em class="fa fa-trash-alt" style="color:white"></em></a>';
 
       }
 
@@ -232,9 +232,9 @@ function filtrarFecha() {
           console.log(iva)
           var ct = (parseFloat(d.precioU)+parseFloat(iva));
           console.log(ct);
-          cellTotal.innerHTML = "$ " + (ct * d.cantidad) + " MNX";
+          cellTotal.innerHTML = "$ " + (ct * d.cantidad).toFixed(2)+ " MNX";
           cellEdit.innerHTML = '<a class="btn btn-warning" onclick="edit(\'' + datos.key + '\')"><em class="fa fa-edit" style="color:white"></em></a>';
-          cellDelete.innerHTML = ' <a class="btn btn-danger" onclick="remover(\'' + datos.key + '\')"><em class="fa fa-trash-alt" style="color:white"></em></a>';
+          cellDelete.innerHTML = ' <a class="btn btn-danger" onclick="confirm(\'' + datos.key + '\')"><em class="fa fa-trash-alt" style="color:white"></em></a>';
 
         }
 
@@ -243,6 +243,36 @@ function filtrarFecha() {
   form2.reset(); // borramos todos los campos. 
 }
 
+function confirm(key){
+  $("#mi-modal").modal('show');
+
+  r(key);
+}
+function r(k){
+
+
+
+$("#modal-btn-si").on("click", function(){
+  callback(true,k);
+  $("#mi-modal").modal('hide');
+});
+
+$("#modal-btn-no").on("click", function(){
+  callback(false,k);
+  $("#mi-modal").modal('hide');
+});
+
+}
+
+ function callback(confirm,key){
+  if(confirm){
+    //Acciones si el usuario confirma
+    remover(key);
+  }else{
+    //Acciones si el usuario no confirma
+    
+  }
+};
 
 function remover(key) {
   var data = db.ref('partidas');
@@ -301,9 +331,9 @@ function buscar(value) {
           console.log(iva)
           var ct = (parseFloat(d.precioU)+parseFloat(iva));
           console.log(ct);
-          cellTotal.innerHTML = "$ " + (ct * d.cantidad) + " MNX";
+          cellTotal.innerHTML = "$ " + (ct * d.cantidad).toFixed(2) + " MNX";
         cellEdit.innerHTML = '<a class="btn btn-warning" onclick="edit(\'' + datos.key + '\')"><em class="fa fa-edit" style="color:white"></em></a>';
-        cellDelete.innerHTML = ' <a class="btn btn-danger" onclick="remover(\'' + datos.key + '\')"><em class="fa fa-trash-alt" style="color:white"></em></a>';
+        cellDelete.innerHTML = ' <a class="btn btn-danger" onclick="confirm(\'' + datos.key + '\')"><em class="fa fa-trash-alt" style="color:white"></em></a>';
 
       }
 

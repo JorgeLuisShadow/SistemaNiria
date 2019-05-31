@@ -36,7 +36,11 @@ function llenarTabla() {
           cellFecha.innerHTML = d.fecha;
           cellPartida.innerHTML = d.partida;
           cellPU.innerHTML = "$ " + d.precioU + " MNX";
-          cellTotal.innerHTML = "$ " + (d.precioU * d.cantidad) + " MNX";
+          var iva = (d.precioU*0.16);
+          console.log(iva)
+          var ct = (parseFloat(d.precioU)+parseFloat(iva));
+          console.log(ct); 
+          cellTotal.innerHTML = "$ " + (ct * d.cantidad).toFixed(2) + " MNX";
           /*cellEdit.innerHTML = '<a class="btn btn-warning"><em class="fa fa-edit" style="color:white"></em></a>';
           cellDelete.innerHTML = ' <a class="btn btn-danger" onclick="remover(\'' + datos.key + '\')"><em class="fa fa-trash-alt" style="color:white"></em></a>';*/
   
