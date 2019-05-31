@@ -103,10 +103,42 @@ function llenarTabla() {
 }
 this.llenarTabla();
 
+function confirm(key){
+  $("#mi-modal").modal('show');
+
+  r(key);
+}
+function r(k){
+
+
+
+$("#modal-btn-si").on("click", function(){
+  callback(true,k);
+  $("#mi-modal").modal('hide');
+});
+
+$("#modal-btn-no").on("click", function(){
+  callback(false,k);
+  $("#mi-modal").modal('hide');
+});
+
+}
+
+ function callback(confirm,key){
+  if(confirm){
+    //Acciones si el usuario confirma
+    remover(key);
+  }else{
+    //Acciones si el usuario no confirma
+    key = '';
+    
+  }
+};
+
 function remover(key) {
   var data = db.ref('equipos');
   data.child(key).remove();
-  this.llenarTabla()
+  this.llenarTabla();
 }
 
 

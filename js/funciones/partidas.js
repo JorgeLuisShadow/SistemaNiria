@@ -170,7 +170,7 @@ function llenarTabla() {
           console.log(ct); 
           cellTotal.innerHTML = "$ " + (ct * d.cantidad).toFixed(2) + " MNX";
         cellEdit.innerHTML = '<a class="btn btn-warning" onclick="edit(\'' + datos.key + '\')"><em class="fa fa-edit" style="color:white"></em></a>';
-        cellDelete.innerHTML = ' <a class="btn btn-danger" onclick="confirm(\'' + datos.key + '\')"><em class="fa fa-trash-alt" style="color:white"></em></a>';
+        cellDelete.innerHTML = ' <a class="btn btn-danger" onclick="remover(\'' + datos.key + '\')"><em class="fa fa-trash-alt" style="color:white"></em></a>';
 
       }
 
@@ -234,7 +234,7 @@ function filtrarFecha() {
           console.log(ct);
           cellTotal.innerHTML = "$ " + (ct * d.cantidad).toFixed(2)+ " MNX";
           cellEdit.innerHTML = '<a class="btn btn-warning" onclick="edit(\'' + datos.key + '\')"><em class="fa fa-edit" style="color:white"></em></a>';
-          cellDelete.innerHTML = ' <a class="btn btn-danger" onclick="confirm(\'' + datos.key + '\')"><em class="fa fa-trash-alt" style="color:white"></em></a>';
+          cellDelete.innerHTML = ' <a class="btn btn-danger" onclick="remover(\'' + datos.key + '\')"><em class="fa fa-trash-alt" style="color:white"></em></a>';
 
         }
 
@@ -333,7 +333,7 @@ function buscar(value) {
           console.log(ct);
           cellTotal.innerHTML = "$ " + (ct * d.cantidad).toFixed(2) + " MNX";
         cellEdit.innerHTML = '<a class="btn btn-warning" onclick="edit(\'' + datos.key + '\')"><em class="fa fa-edit" style="color:white"></em></a>';
-        cellDelete.innerHTML = ' <a class="btn btn-danger" onclick="confirm(\'' + datos.key + '\')"><em class="fa fa-trash-alt" style="color:white"></em></a>';
+        cellDelete.innerHTML = ' <a class="btn btn-danger" onclick="remover(\'' + datos.key + '\')"><em class="fa fa-trash-alt" style="color:white"></em></a>';
 
       }
 
