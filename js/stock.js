@@ -8,12 +8,13 @@ $( document ).ready(function() {
      var bd= firebase.database().ref('stock')
 
      bd.orderByChild("id").on("child_added",function(datos){
+         
          var exe=datos.val();
-         var a=document.getElementById('cuerpo') 
+         var a=document.getElementById('cuerpo'); 
          a.innerHTML+=`<tr> 
          <td>${exe.articulo}</td>
          <td>${exe.clave}</td>
-         <td>${exe.cantidad}</td> 
+         <td>${exe.cantidad/2}</td> 
          </tr>`    
      })
           

@@ -78,7 +78,7 @@ var list= [];
           var cantidadT = a + b;
           
           var t = String(cantidadT);
-          console.log(t)
+         
           update(datos.key,t);
 
           if(list.length>1){
@@ -109,8 +109,7 @@ function update(key, cantidad) {
 
 
 function insertarPartida(data) {
-
-
+console.log(data)
   db.ref('partidas').push(data)
     .then(function () {
       $('#modalNuevo').modal('hide')
@@ -124,6 +123,7 @@ function insertarPartida(data) {
 };
 
 function insertarStock(data,claveN, cantidadN, dataStock) {
+  console.log(data)
   db.ref('stock').push(data)
     .then(function () {
      // validaEx(data, claveN, cantidadN, dataStock);
@@ -165,9 +165,9 @@ function llenarTabla() {
         cellPartida.innerHTML = d.partida;
         cellPU.innerHTML = "$ " + d.precioU + " MNX";
         var iva = (d.precioU*0.16);
-          console.log(iva)
+        
           var ct = (parseFloat(d.precioU)+parseFloat(iva));
-          console.log(ct); 
+          
           cellTotal.innerHTML = "$ " + (ct * d.cantidad).toFixed(2) + " MNX";
         cellEdit.innerHTML = '<a class="btn btn-warning" onclick="edit(\'' + datos.key + '\')"><em class="fa fa-edit" style="color:white"></em></a>';
         cellDelete.innerHTML = ' <a class="btn btn-danger" onclick="remover(\'' + datos.key + '\')"><em class="fa fa-trash-alt" style="color:white"></em></a>';
@@ -229,9 +229,9 @@ function filtrarFecha() {
           cellPartida.innerHTML = d.partida;
           cellPU.innerHTML = "$ " + d.precioU + " MNX";
           var iva = (d.precioU*0.16);
-          console.log(iva)
+         
           var ct = (parseFloat(d.precioU)+parseFloat(iva));
-          console.log(ct);
+         
           cellTotal.innerHTML = "$ " + (ct * d.cantidad).toFixed(2)+ " MNX";
           cellEdit.innerHTML = '<a class="btn btn-warning" onclick="edit(\'' + datos.key + '\')"><em class="fa fa-edit" style="color:white"></em></a>';
           cellDelete.innerHTML = ' <a class="btn btn-danger" onclick="remover(\'' + datos.key + '\')"><em class="fa fa-trash-alt" style="color:white"></em></a>';
